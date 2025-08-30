@@ -11,7 +11,7 @@ def get_db_connection():
         host="127.0.0.1",
         database="postgres",
         user="postgres",
-        password="Chandhini@143"
+        password="password"
     )
 
 # ---------- Create Tables if not exists ----------
