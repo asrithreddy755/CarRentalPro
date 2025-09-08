@@ -1,8 +1,9 @@
-
-from flask import Flask
+from flask import Flask, request, jsonify
+import psycopg2
+import psycopg2.extras
+import os
 
 app = Flask(__name__)
-
 
 # ---------- Database Connection ----------
 def get_db_connection():
@@ -64,9 +65,7 @@ def create_tables():
 
 create_tables()
 
-# ---------- Admin APIs ----------
-
-# Admin Login
+# ------------------ Admin APIs ------------------
 @app.route("/admin/login", methods=["POST"])
 def admin_login():
     data = request.json
@@ -86,7 +85,6 @@ def admin_login():
         return jsonify({"message": "Admin login successful", "admin_id": admin["id"]})
     return jsonify({"error": "Invalid credentials"}), 401
 
-# Add another Admin
 @app.route("/admin/add", methods=["POST"])
 def add_admin():
     data = request.json
@@ -105,7 +103,6 @@ def add_admin():
     except psycopg2.IntegrityError:
         return jsonify({"error": "Email already exists"}), 400
 
-# Add Car Details
 @app.route("/admin/add_car", methods=["POST"])
 def add_car():
     data = request.json
@@ -122,7 +119,6 @@ def add_car():
 
     return jsonify({"message": "Car added successfully"})
 
-# View All Bookings with customer mobile
 @app.route("/admin/bookings", methods=["GET"])
 def view_all_bookings():
     conn = get_db_connection()
@@ -138,7 +134,6 @@ def view_all_bookings():
     conn.close()
     return jsonify([dict(row) for row in bookings])
 
-# Cancel Booking
 @app.route("/admin/cancel_booking/<int:booking_id>", methods=["PUT"])
 def cancel_booking(booking_id):
     conn = get_db_connection()
@@ -149,7 +144,6 @@ def cancel_booking(booking_id):
     conn.close()
     return jsonify({"message": f"Booking {booking_id} cancelled"})
 
-# Complete Rental
 @app.route("/admin/complete_booking/<int:booking_id>", methods=["PUT"])
 def complete_booking(booking_id):
     conn = get_db_connection()
@@ -160,9 +154,7 @@ def complete_booking(booking_id):
     conn.close()
     return jsonify({"message": f"Booking {booking_id} marked as Completed"})
 
-# ---------- Customer APIs ----------
-
-# Customer Registration
+# ------------------ Customer APIs ------------------
 @app.route("/customer/register", methods=["POST"])
 def register_customer():
     data = request.json
@@ -182,7 +174,6 @@ def register_customer():
     except psycopg2.IntegrityError:
         return jsonify({"error": "Email already exists"}), 400
 
-# Customer Login
 @app.route("/customer/login", methods=["POST"])
 def customer_login():
     data = request.json
@@ -200,7 +191,6 @@ def customer_login():
         return jsonify({"message": "Customer login successful", "customer_id": customer["id"], "mobile": customer["mobile"]})
     return jsonify({"error": "Invalid credentials"}), 401
 
-# Rent a Car
 @app.route("/customer/rent", methods=["POST"])
 def rent_car():
     data = request.json
@@ -220,7 +210,6 @@ def rent_car():
 
     return jsonify({"message": "Car rented successfully"})
 
-# View Customer's Bookings
 @app.route("/customer/bookings/<int:customer_id>", methods=["GET"])
 def view_customer_bookings(customer_id):
     conn = get_db_connection()
@@ -235,7 +224,7 @@ def view_customer_bookings(customer_id):
     cur.close()
     conn.close()
     return jsonify([dict(row) for row in bookings])
-# Get all cars with availability
+
 @app.route("/cars", methods=["GET"])
 def get_cars():
     conn = get_db_connection()
@@ -246,7 +235,6 @@ def get_cars():
     conn.close()
     return jsonify([dict(row) for row in cars])
 
-# Customer cancel booking
 @app.route("/customer/cancel_booking/<int:booking_id>", methods=["PUT"])
 def customer_cancel_booking(booking_id):
     conn = get_db_connection()
@@ -256,7 +244,7 @@ def customer_cancel_booking(booking_id):
     cur.close()
     conn.close()
     return jsonify({"message": "Booking canceled by customer"})
-# Get all cars with their bookings
+
 @app.route("/cars_with_bookings", methods=["GET"])
 def get_cars_with_bookings():
     conn = get_db_connection()
@@ -278,8 +266,8 @@ def get_cars_with_bookings():
     cur.close()
     conn.close()
     return jsonify([dict(row) for row in cars])
-# ---------- Frontend Routes ----------
->>>>>>> d66228fee96b56a9462a3d15ca8473ff115e6506
+
+# ------------------ Frontend Route ------------------
 @app.route('/')
 def home():
     return "Hello from Flask on Render!"
@@ -287,7 +275,3 @@ def home():
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
-#def home():
- #return "Hello, Flask!"
-
-#application = app  # Required for Elastic Beanstalk
