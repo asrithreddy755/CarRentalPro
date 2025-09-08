@@ -8,10 +8,11 @@ app = Flask(__name__)
 # ---------- Database Connection ----------
 def get_db_connection():
     return psycopg2.connect(
-        host="127.0.0.1",
-        database="postgres",
-        user="postgres",
-        password="password"
+        dbname=os.getenv("lol_loir"),
+        user=os.getenv("lol_loir_user"),
+        password=os.getenv("utF10VsAv68PulDl2oP2KWmDdR1WDTJz"),
+        host=os.getenv("lol.postgres.render.com"),
+        port=os.getenv("5432")
     )
 
 # ---------- Create Tables if not exists ----------
