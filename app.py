@@ -3,8 +3,7 @@ from flask import Flask
 
 app = Flask(__name__)
 
-<<<<<<< HEAD
-=======
+
 # ---------- Database Connection ----------
 def get_db_connection():
     return psycopg2.connect(
@@ -283,6 +282,12 @@ def get_cars_with_bookings():
 >>>>>>> d66228fee96b56a9462a3d15ca8473ff115e6506
 @app.route('/')
 def home():
-    return "Hello, Flask!"
+    return "Hello from Flask on Render!"
 
-application = app  # Required for Elastic Beanstalk
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
+#def home():
+ #return "Hello, Flask!"
+
+#application = app  # Required for Elastic Beanstalk
