@@ -275,8 +275,8 @@ def get_cars_with_bookings():
 @app.route('/')
 def home():
     return "Hello from Flask on Render!"
-
 if __name__ == "__main__":
-     create_tables()
-    app.run(host="0.0.0.0", port=5000)
+    create_tables()
+    app.run()
+
 
