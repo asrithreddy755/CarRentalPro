@@ -1,19 +1,22 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import psycopg2
 import psycopg2.extras
 import os
+from dotenv import load_dotenv
 
+load_dotenv()
 
 app = Flask(__name__)
-
+CORS(app)  # Enable CORS for all routes
 # ---------- Database Connection ----------
 def get_db_connection():
     return psycopg2.connect(
-        dbname=os.getenv("lol_loir"),
-        user=os.getenv("lol_loir_user"),
-        password=os.getenv("utF10VsAv68PulDl2oP2KWmDdR1WDTJz"),
-        host=os.getenv("lol.postgres.render.com"),
-        port=os.getenv("5432")
+        dbname=os.getenv("DB_NAME"),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASSWORD"),
+        host=os.getenv("DB_HOST"),
+        port=os.getenv("DB_PORT", "5432")
     )
 
 # ---------- Create Tables if not exists ----------
@@ -65,7 +68,6 @@ def create_tables():
     cur.close()
     conn.close()
 
-create_tables()
 
 # ------------------ Admin APIs ------------------
 @app.route("/admin/login", methods=["POST"])
