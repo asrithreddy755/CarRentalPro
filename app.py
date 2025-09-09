@@ -275,5 +275,12 @@ def get_cars_with_bookings():
 def home():
     return "Hello from my Car Rental Website!"
 
+# Initialize database tables
+try:
+    create_tables()
+    print("Database tables created successfully!")
+except Exception as e:
+    print(f"Error creating tables: {e}")
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
