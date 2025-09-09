@@ -3,6 +3,7 @@ import psycopg2
 import psycopg2.extras
 import os
 
+
 app = Flask(__name__)
 
 # ---------- Database Connection ----------
@@ -269,10 +270,9 @@ def get_cars_with_bookings():
     return jsonify([dict(row) for row in cars])
 
 # ------------------ Frontend Route ------------------
-@app.route('/')
+@app.route("/")
 def home():
-    return "Hello from Flask on Render!"
+    return "Hello from my Car Rental Website!"
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
+    app.run(host="0.0.0.0", port=5000)
