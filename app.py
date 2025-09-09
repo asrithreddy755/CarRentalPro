@@ -68,7 +68,6 @@ def create_tables():
     cur.close()
     conn.close()
 
-
 # ------------------ Admin APIs ------------------
 @app.route("/admin/login", methods=["POST"])
 def admin_login():
